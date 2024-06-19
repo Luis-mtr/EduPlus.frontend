@@ -1,0 +1,66 @@
+.page-content {
+    margin-top: 80px;
+}
+
+.languages-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.languages-table th, .languages-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.languages-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.languages-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.languages-table th input {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.delete-button, .submit-button {
+    border: none;
+    padding: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}
+
+.submit-button {
+    background-color: green;
+    color: white;
+}
+
+.submit-button:hover {
+    background-color: darkgreen;
+}
+
+input[type="text"], select {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
