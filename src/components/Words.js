@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Phrases.css";
+import "./Words.css";
 import NavBar from "./NavBar";
 
-function Phrases() {
+function Words() {
   const [languages, setLanguages] = useState([]);
-  const [phrases, setPhrases] = useState([]);
-  const [filteredPhrases, setFilteredPhrases] = useState([]);
+  const [words, setWords] = useState([]);
+  const [filteredWords, setFilteredWords] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState(null);
-  const [phraseLanguages, setPhraseLanguages] = useState({});
+  const [wordLanguages, setWordLanguages] = useState({});
   const [inputValues, setInputValues] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -30,69 +30,69 @@ function Phrases() {
       }
     };
 
-    const fetchPhrases = async () => {
+    const fetchWords = async () => {
       try {
-        const response = await axios.get("http://localhost:5270/api/phrase", {
+        const response = await axios.get("http://localhost:5270/api/word", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        setPhrases(response.data);
-        setFilteredPhrases(response.data); // Initialize filteredPhrases
+        setWords(response.data);
+        setFilteredWords(response.data); // Initialize filteredWords
       } catch (error) {
-        console.error("Error fetching phrases:", error);
+        console.error("Error fetching words:", error);
       }
     };
 
     fetchLanguages();
-    fetchPhrases();
+    fetchWords();
   }, []);
 
   useEffect(() => {
     if (selectedLanguage) {
-      const fetchPhraseLanguages = async () => {
+      const fetchWordLanguages = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:5270/api/phraselanguage`,
+            `http://localhost:5270/api/wordlanguage`,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
             }
           );
-          const phraseLangMap = {};
-          response.data.forEach((pl) => {
-            phraseLangMap[`${pl.phraseId}_${pl.languageId}`] = pl;
+          const wordLangMap = {};
+          response.data.forEach((wl) => {
+            wordLangMap[`${wl.wordId}_${wl.languageId}`] = wl;
           });
-          setPhraseLanguages(phraseLangMap);
+          setWordLanguages(wordLangMap);
         } catch (error) {
-          console.error("Error fetching phrase languages:", error);
+          console.error("Error fetching word languages:", error);
         }
       };
 
-      fetchPhraseLanguages();
+      fetchWordLanguages();
     }
   }, [selectedLanguage]);
 
-  const handleInputChange = (e, phraseId) => {
+  const handleInputChange = (e, wordId) => {
     const { value } = e.target;
     setInputValues((prev) => ({
       ...prev,
-      [`${phraseId}_${selectedLanguage}`]: value,
+      [`${wordId}_${selectedLanguage}`]: value,
     }));
   };
 
-  const handleSave = async (phraseId) => {
-    const key = `${phraseId}_${selectedLanguage}`;
-    const phraseInLanguage = inputValues[key];
+  const handleSave = async (wordId) => {
+    const key = `${wordId}_${selectedLanguage}`;
+    const wordInLanguage = inputValues[key];
 
     try {
       await axios.post(
-        "http://localhost:5270/api/phraselanguage",
+        "http://localhost:5270/api/wordlanguage",
         {
-          phraseId: phraseId,
+          wordId: wordId,
           languageId: selectedLanguage,
-          phraseLanguage: phraseInLanguage,
+          wordLanguage: wordInLanguage,
         },
         {
           headers: {
@@ -100,56 +100,56 @@ function Phrases() {
           },
         }
       );
-      alert("Phrase created successfully");
-      setPhraseLanguages((prevState) => ({
+      alert("Word created successfully");
+      setWordLanguages((prevState) => ({
         ...prevState,
-        [key]: { phraseInLanguage: phraseInLanguage },
+        [key]: { wordInLanguage: wordInLanguage },
       }));
       setInputValues((prev) => ({
         ...prev,
         [key]: "",
       }));
     } catch (error) {
-      console.error("Error saving phrase:", error);
-      alert("Failed to save phrase");
+      console.error("Error saving word:", error);
+      alert("Failed to save word");
     }
   };
 
-  const handleDelete = async (phraseId) => {
+  const handleDelete = async (wordId) => {
     try {
       await axios.delete(
-        `http://localhost:5270/api/phraselanguage/${phraseId}/${selectedLanguage}`,
+        `http://localhost:5270/api/wordlanguage/${wordId}/${selectedLanguage}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      setPhraseLanguages((prev) => {
+      setWordLanguages((prev) => {
         const newState = { ...prev };
-        delete newState[`${phraseId}_${selectedLanguage}`];
+        delete newState[`${wordId}_${selectedLanguage}`];
         return newState;
       });
-      alert("Phrase deleted successfully");
+      alert("Word deleted successfully");
     } catch (error) {
-      console.error("Error deleting phrase:", error);
-      alert("Failed to delete phrase");
+      console.error("Error deleting word:", error);
+      alert("Failed to delete word");
     }
   };
 
-  const getPhraseInLanguage = (phraseId) => {
-    const key = `${phraseId}_${selectedLanguage}`;
-    return phraseLanguages[key]?.phraseInLanguage || "";
+  const getWordInLanguage = (wordId) => {
+    const key = `${wordId}_${selectedLanguage}`;
+    return wordLanguages[key]?.wordInLanguage || "";
   };
 
   const handleSearch = (e) => {
     const { value } = e.target;
     setSearchTerm(value);
 
-    const filtered = phrases.filter((phrase) =>
-      phrase.phraseText.toLowerCase().includes(value.toLowerCase())
+    const filtered = words.filter((word) =>
+      word.wordText.toLowerCase().includes(value.toLowerCase())
     );
-    setFilteredPhrases(filtered);
+    setFilteredWords(filtered);
   };
 
   return (
@@ -169,7 +169,7 @@ function Phrases() {
           ))}
         </select>
       </div>
-      <table className="phrases-table">
+      <table className="words-table">
         <thead>
           <tr>
             <th>
@@ -180,44 +180,44 @@ function Phrases() {
                 onChange={handleSearch}
               />
             </th>
-            <th>Phrase in Language</th>
+            <th>Word in Language</th>
             <th>Delete/Submit</th>
           </tr>
         </thead>
         <tbody>
-          {filteredPhrases.map((phrase) => {
-            const phraseInLanguage = getPhraseInLanguage(phrase.phraseId);
-            const phraseLangExists = Boolean(phraseInLanguage);
-            const key = `${phrase.phraseId}_${selectedLanguage}`;
+          {filteredWords.map((word) => {
+            const wordInLanguage = getWordInLanguage(word.wordId);
+            const wordLangExists = Boolean(wordInLanguage);
+            const key = `${word.wordId}_${selectedLanguage}`;
             const inputValue = inputValues[key] || "";
 
             return (
-              <tr key={phrase.phraseId}>
-                <td>{phrase.phraseText}</td>
+              <tr key={word.wordId}>
+                <td>{word.wordText}</td>
                 <td className="input-cell">
-                  {phraseLangExists ? (
-                    <span>{phraseInLanguage}</span>
+                  {wordLangExists ? (
+                    <span>{wordInLanguage}</span>
                   ) : (
                     <input
                       type="text"
-                      name="phraseInLanguage"
+                      name="wordInLanguage"
                       value={inputValue}
-                      onChange={(e) => handleInputChange(e, phrase.phraseId)}
+                      onChange={(e) => handleInputChange(e, word.wordId)}
                     />
                   )}
                 </td>
                 <td>
-                  {phraseLangExists ? (
+                  {wordLangExists ? (
                     <button
                       className="delete-button"
-                      onClick={() => handleDelete(phrase.phraseId)}
+                      onClick={() => handleDelete(word.wordId)}
                     >
                       ✖
                     </button>
                   ) : (
                     <button
                       className="submit-button"
-                      onClick={() => handleSave(phrase.phraseId)}
+                      onClick={() => handleSave(word.wordId)}
                     >
                       ✔
                     </button>
@@ -232,4 +232,4 @@ function Phrases() {
   );
 }
 
-export default Phrases;
+export default Words;

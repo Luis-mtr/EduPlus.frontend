@@ -1,0 +1,48 @@
+.page-content {
+    margin-top: 80px; /* Add some space for the fixed navbar */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.upload-container input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.upload-container label {
+    margin-top: 20px; /* Add some space above the label */
+}
+
+.upload-container .spacer {
+    height: 20px; /* Add some space between the input fields */
+}
+
+.upload-container button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.upload-container button:hover {
+    background-color: #45a049;
+}

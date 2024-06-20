@@ -13,6 +13,8 @@ import UserPage from "./components/UserPage";
 import Accounts from "./components/Accounts";
 import Languages from "./components/Languages";
 import Phrases from "./components/Phrases";
+import Words from "./components/Words";
+import Upload from "./components/Upload"; // Import the Upload component
 
 function App() {
   const { auth, role } = useContext(AuthContext);
@@ -50,6 +52,18 @@ function App() {
           path="/phrases"
           element={
             auth && role === "Admin" ? <Phrases /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/words"
+          element={
+            auth && role === "Admin" ? <Words /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/upload"
+          element={
+            auth && role === "Admin" ? <Upload /> : <Navigate to="/login" />
           }
         />
         <Route path="*" element={<Navigate to="/login" />} />

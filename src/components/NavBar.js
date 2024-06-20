@@ -23,6 +23,9 @@ function NavBar() {
       <Link to="/words" className={isActive("/words")}>
         Words
       </Link>
+      <Link to="/upload" className={isActive("/upload")}>
+        Upload
+      </Link>
     </div>
   );
 }

@@ -3,31 +3,31 @@
     padding: 20px;
 }
 
-.phrases-table {
+.words-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.phrases-table th, .phrases-table td {
+.words-table th, .words-table td {
     border: 1px solid #ddd;
     padding: 12px 15px;
     text-align: left;
     vertical-align: middle;
 }
 
-.phrases-table th {
+.words-table th {
     background-color: #f2f2f2;
     font-weight: bold;
     text-transform: uppercase;
 }
 
-.phrases-table tr:nth-child(even) {
+.words-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-.phrases-table tr:hover {
+.words-table tr:hover {
     background-color: #f1f1f1;
 }
 
