@@ -5,7 +5,8 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(false);
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState(null);
+  const [nativeLanguageId, setNativeLanguageId] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -13,11 +14,21 @@ export const AuthProvider = ({ children }) => {
       const decodedToken = jwtDecode(token);
       setAuth(true);
       setRole(decodedToken.role);
+      setNativeLanguageId(decodedToken.nativeLanguageId); // Ensure to set native language ID
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth, role, setRole }}>
+    <AuthContext.Provider
+      value={{
+        auth,
+        setAuth,
+        role,
+        setRole,
+        nativeLanguageId,
+        setNativeLanguageId,
+      }} // Add setNativeLanguageId here
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -18,6 +18,9 @@
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+    background: none; /* Ensure buttons don't have a background by default */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Ensure pointer cursor for buttons */
 }
 
 .nav-button:hover, .nav-button.active {

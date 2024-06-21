@@ -1,12 +1,20 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./NavBar.css";
 
 function NavBar() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isActive = (path) => {
     return location.pathname === path ? "nav-button active" : "nav-button";
+  };
+
+  const handleLogout = () => {
+    // Clear local storage or any other stored data
+    localStorage.removeItem("token");
+    // Navigate to the login page
+    navigate("/login");
   };
 
   return (
@@ -26,6 +34,9 @@ function NavBar() {
       <Link to="/upload" className={isActive("/upload")}>
         Upload
       </Link>
+      <button className="nav-button logout-button" onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 }

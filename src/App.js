@@ -14,13 +14,22 @@ import Accounts from "./components/Accounts";
 import Languages from "./components/Languages";
 import Phrases from "./components/Phrases";
 import Words from "./components/Words";
-import Upload from "./components/Upload"; // Import the Upload component
+import Upload from "./components/Upload";
+import Statistics from "./components/Statistics";
+import Question from "./components/Question"; // Import the Question component
+import Sidebar from "./components/Sidebar";
+import "./App.css";
 
-function App() {
+const MainContent = () => {
   const { auth, role } = useContext(AuthContext);
 
   return (
-    <Router>
+    <div
+      className={`main-content ${
+        auth && role === "User" ? "with-sidebar" : ""
+      }`}
+    >
+      {auth && role === "User" && <Sidebar />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -66,8 +75,28 @@ function App() {
             auth && role === "Admin" ? <Upload /> : <Navigate to="/login" />
           }
         />
+        <Route
+          path="/statistics"
+          element={
+            auth && role === "User" ? <Statistics /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/question/:selectedLanguageId"
+          element={
+            auth && role === "User" ? <Question /> : <Navigate to="/login" />
+          }
+        />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <MainContent />
     </Router>
   );
 }
