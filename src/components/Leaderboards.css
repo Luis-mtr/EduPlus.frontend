@@ -1,0 +1,44 @@
+.leaderboards-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  margin-left: 225px;
+}
+
+.leaderboard {
+  width: 45%;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.leaderboard table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leaderboard th, .leaderboard td {
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.leaderboard th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.leaderboard tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.leaderboard tr:hover {
+  background-color: #f1f1f1;
+}

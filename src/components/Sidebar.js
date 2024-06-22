@@ -6,8 +6,13 @@ import { AuthContext } from "../context/AuthContext";
 
 function Sidebar() {
   const [languages, setLanguages] = useState([]);
-  const { nativeLanguageId, setAuth, setRole, setNativeLanguageId } =
-    useContext(AuthContext); // Get native language ID and context setters
+  const {
+    nativeLanguageId,
+    setAuth,
+    setRole,
+    setNativeLanguageId,
+    totalPoints,
+  } = useContext(AuthContext); // Get native language ID and context setters
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -51,9 +56,16 @@ function Sidebar() {
       <Link to="/statistics" className={isActive("/statistics")}>
         Statistics
       </Link>
+      <Link to="/leaderboards" className={isActive("/leaderboards")}>
+        Leaderboards
+      </Link>
       <button onClick={handleLogout} className="sidebar-button">
         Logout
       </button>
+      <div className="total-points">
+        <p>Total Points</p>
+        <p>{totalPoints}</p>
+      </div>
       <div className="submenu">
         <p>Learn</p>
         {languages.map((language) => (

@@ -1,47 +1,53 @@
 .sidebar {
-    width: 250px;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #333;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    z-index: 1000;
-    overflow-y: auto; /* Add this to make the sidebar scrollable */
+  width: 125px; /* Reduce width to half */
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #333;
+  padding: 10px; /* Adjust padding to maintain proportions */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 1000;
+  overflow-y: auto; /* Add this to make the sidebar scrollable */
 }
 
 .sidebar-button {
-    display: block;
-    color: #f2f2f2;
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 16px;
-    width: 100%;
-    text-align: left;
-    border: none;
-    background: none;
-    cursor: pointer;
+  display: block;
+  color: #f2f2f2;
+  padding: 5px 8px; /* Adjust padding to maintain proportions */
+  text-decoration: none;
+  font-size: 14px; /* Adjust font size to maintain proportions */
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 
 .sidebar-button:hover {
-    background-color: #ddd;
-    color: black;
+  background-color: #ddd;
+  color: black;
 }
 
 .sidebar-button.active {
-    background-color: #ddd;
-    color: black;
+  background-color: #ddd;
+  color: black;
 }
 
 .submenu {
-    margin-top: 20px;
+  margin-top: 10px; /* Adjust margin to maintain proportions */
 }
 
 .submenu p {
-    color: #f2f2f2;
-    margin: 10px 0;
-    font-size: 18px;
+  color: #f2f2f2;
+  margin: 5px 0; /* Adjust margin to maintain proportions */
+  font-size: 14px; /* Adjust font size to maintain proportions */
+}
+
+.total-points {
+  margin-top: 10px; /* Adjust margin to maintain proportions */
+  color: #f2f2f2;
+  font-size: 14px; /* Adjust font size to maintain proportions */
 }

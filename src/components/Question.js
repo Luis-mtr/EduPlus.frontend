@@ -6,10 +6,13 @@ import { AuthContext } from "../context/AuthContext";
 
 function Question() {
   const { selectedLanguageId } = useParams();
-  const { auth } = useContext(AuthContext);
+  const { auth, setTotalPoints } = useContext(AuthContext); // Use setTotalPoints from context
   const [question, setQuestion] = useState(null);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [isCorrect, setIsCorrect] = useState(null);
+  const [combo, setCombo] = useState(1);
+  const [score, setScore] = useState(0);
+  const [lastTwoQuestions, setLastTwoQuestions] = useState([]);
 
   useEffect(() => {
     if (auth) {
@@ -27,9 +30,23 @@ function Question() {
           },
         }
       );
-      setQuestion(response.data);
-      setSelectedAnswer("");
-      setIsCorrect(null);
+      const newQuestion = response.data;
+
+      // Check if the new question is one of the last two questions
+      if (lastTwoQuestions.some((q) => q.phraseId === newQuestion.phraseId)) {
+        // If it is, fetch a new question
+        fetchQuestion();
+      } else {
+        setQuestion(newQuestion);
+        setLastTwoQuestions((prevQuestions) => {
+          const updatedQuestions = [...prevQuestions, newQuestion];
+          return updatedQuestions.length > 2
+            ? updatedQuestions.slice(1)
+            : updatedQuestions;
+        });
+        setSelectedAnswer("");
+        setIsCorrect(null);
+      }
     } catch (error) {
       console.error("Error fetching question:", error);
     }
@@ -37,6 +54,25 @@ function Question() {
 
   const handleAnswerSelect = (answer) => {
     setSelectedAnswer(answer);
+  };
+
+  const updateScore = async (sessionPoints, addPoints) => {
+    try {
+      await axios.post(
+        "http://localhost:5270/api/score/Update",
+        {
+          sessionPoints: sessionPoints,
+          addPoints: addPoints,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error updating score:", error);
+    }
   };
 
   const handleSubmit = async () => {
@@ -63,6 +99,17 @@ function Question() {
 
       setIsCorrect(isAnswerCorrect);
 
+      if (isAnswerCorrect) {
+        const newScore = score + combo;
+        const comboValue = combo;
+        setScore(newScore);
+        setCombo((prevCombo) => (prevCombo < 128 ? prevCombo * 2 : prevCombo));
+        updateScore(newScore, comboValue);
+        setTotalPoints((prevTotalPoints) => prevTotalPoints + comboValue); // Update the total points in the context
+      } else {
+        setCombo(1);
+      }
+
       // Show result for 2 seconds, then fetch a new question
       setTimeout(() => {
         fetchQuestion();
@@ -73,6 +120,7 @@ function Question() {
   };
 
   const handleSkip = () => {
+    setCombo(1);
     fetchQuestion();
   };
 
@@ -100,6 +148,10 @@ function Question() {
   return (
     <div className="question-container">
       <h2>{question.nativeLanguageText}</h2>
+      <div className="game-stats">
+        <div className="stat-item combo">Combo: x{combo}</div>
+        <div className="stat-item score">Score: {score}</div>
+      </div>
       <div className="answers">
         {choices.map((choice, index) => (
           <button

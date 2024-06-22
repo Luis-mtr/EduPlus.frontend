@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -7,16 +7,26 @@ export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(false);
   const [role, setRole] = useState(null);
   const [nativeLanguageId, setNativeLanguageId] = useState(null);
+  const [totalPoints, setTotalPoints] = useState(0); // Initialize totalPoints with 0
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      setAuth(true);
-      setRole(decodedToken.role);
-      setNativeLanguageId(decodedToken.nativeLanguageId); // Ensure to set native language ID
+    const fetchTotalPoints = async () => {
+      try {
+        const response = await axios.get("http://localhost:5270/api/score", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setTotalPoints(response.data.addPoints);
+      } catch (error) {
+        console.error("Error fetching total points:", error);
+      }
+    };
+
+    if (auth) {
+      fetchTotalPoints();
     }
-  }, []);
+  }, [auth]);
 
   return (
     <AuthContext.Provider
@@ -27,7 +37,9 @@ export const AuthProvider = ({ children }) => {
         setRole,
         nativeLanguageId,
         setNativeLanguageId,
-      }} // Add setNativeLanguageId here
+        totalPoints,
+        setTotalPoints,
+      }}
     >
       {children}
     </AuthContext.Provider>

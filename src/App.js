@@ -16,8 +16,9 @@ import Phrases from "./components/Phrases";
 import Words from "./components/Words";
 import Upload from "./components/Upload";
 import Statistics from "./components/Statistics";
-import Question from "./components/Question"; // Import the Question component
+import Question from "./components/Question";
 import Sidebar from "./components/Sidebar";
+import Leaderboards from "./components/Leaderboards"; // Import Leaderboards component
 import "./App.css";
 
 const MainContent = () => {
@@ -85,6 +86,16 @@ const MainContent = () => {
           path="/question/:selectedLanguageId"
           element={
             auth && role === "User" ? <Question /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/leaderboards"
+          element={
+            auth && role === "User" ? (
+              <Leaderboards />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route path="*" element={<Navigate to="/login" />} />

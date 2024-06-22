@@ -4,6 +4,32 @@
   align-items: center;
   text-align: center;
   padding: 20px;
+  margin-left: 225px;
+}
+
+.game-stats {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.stat-item {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+}
+
+.combo {
+  color: #007bff;
+}
+
+.score {
+  color: #28a745;
 }
 
 .answers {
@@ -77,6 +103,7 @@
   align-items: center;
   text-align: center;
   padding: 20px;
+  margin-left: 225px;
 }
 
 .result {
