@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Phrases.css";
 import NavBar from "./NavBar";
+import config from "../config";
 
 function Phrases() {
   const [languages, setLanguages] = useState([]);
@@ -15,14 +16,11 @@ function Phrases() {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5270/api/languages",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`${config.apiBaseUrl}/api/languages`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setLanguages(response.data);
         setSelectedLanguage(response.data[0]?.languageId || null);
       } catch (error) {
@@ -32,7 +30,7 @@ function Phrases() {
 
     const fetchPhrases = async () => {
       try {
-        const response = await axios.get("http://localhost:5270/api/phrase", {
+        const response = await axios.get(`${config.apiBaseUrl}/api/phrase`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -53,7 +51,7 @@ function Phrases() {
       const fetchPhraseLanguages = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:5270/api/phraselanguage`,
+            `${config.apiBaseUrl}/api/phraselanguage`,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -88,7 +86,7 @@ function Phrases() {
 
     try {
       await axios.post(
-        "http://localhost:5270/api/phraselanguage",
+        `${config.apiBaseUrl}/api/phraselanguage`,
         {
           phraseId: phraseId,
           languageId: selectedLanguage,
@@ -118,7 +116,7 @@ function Phrases() {
   const handleDelete = async (phraseId) => {
     try {
       await axios.delete(
-        `http://localhost:5270/api/phraselanguage/${phraseId}/${selectedLanguage}`,
+        `${config.apiBaseUrl}/api/phraselanguage/${phraseId}/${selectedLanguage}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

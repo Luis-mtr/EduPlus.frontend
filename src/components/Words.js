@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Words.css";
 import NavBar from "./NavBar";
+import config from "../config";
 
 function Words() {
   const [languages, setLanguages] = useState([]);
@@ -15,14 +16,11 @@ function Words() {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5270/api/languages",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`${config.apiBaseUrl}api/languages`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setLanguages(response.data);
         setSelectedLanguage(response.data[0]?.languageId || null);
       } catch (error) {
@@ -32,7 +30,7 @@ function Words() {
 
     const fetchWords = async () => {
       try {
-        const response = await axios.get("http://localhost:5270/api/word", {
+        const response = await axios.get(`${config.apiBaseUrl}api/word`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -53,7 +51,7 @@ function Words() {
       const fetchWordLanguages = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:5270/api/wordlanguage`,
+            `${config.apiBaseUrl}api/wordlanguage`,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -88,7 +86,7 @@ function Words() {
 
     try {
       await axios.post(
-        "http://localhost:5270/api/wordlanguage",
+        `${config.apiBaseUrl}api/wordlanguage`,
         {
           wordId: wordId,
           languageId: selectedLanguage,
@@ -118,7 +116,7 @@ function Words() {
   const handleDelete = async (wordId) => {
     try {
       await axios.delete(
-        `http://localhost:5270/api/wordlanguage/${wordId}/${selectedLanguage}`,
+        `${config.apiBaseUrl}api/wordlanguage/${wordId}/${selectedLanguage}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

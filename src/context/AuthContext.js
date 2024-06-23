@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import config from "../config";
 
 export const AuthContext = createContext();
 
@@ -12,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchTotalPoints = async () => {
       try {
-        const response = await axios.get("http://localhost:5270/api/score", {
+        const response = await axios.get(`${config.apiBaseUrl}api/score`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

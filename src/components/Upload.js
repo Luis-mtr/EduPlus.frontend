@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./Upload.css";
 import NavBar from "./NavBar";
+import config from "../config";
 
 function Upload() {
   const [phrase, setPhrase] = useState("");
@@ -25,7 +26,7 @@ function Upload() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5270/api/Phrase/bulk-add",
+        `${config.apiBaseUrl}api/Phrase/bulk-add`,
         payload,
         {
           headers: {

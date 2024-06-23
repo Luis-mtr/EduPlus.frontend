@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Languages.css";
 import NavBar from "./NavBar";
+import config from "../config";
 
 function Languages() {
   const [languages, setLanguages] = useState([]);
@@ -12,14 +13,11 @@ function Languages() {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5270/api/languages",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`${config.apiBaseUrl}api/languages`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setLanguages(response.data);
         setFilteredLanguages(response.data);
       } catch (error) {
@@ -40,14 +38,11 @@ function Languages() {
   const handleDelete = async (languageId) => {
     if (window.confirm(`Are you sure you want to delete this language?`)) {
       try {
-        await axios.delete(
-          `http://localhost:5270/api/languages/${languageId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        await axios.delete(`${config.apiBaseUrl}api/languages/${languageId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setLanguages(
           languages.filter((language) => language.languageId !== languageId)
         );
@@ -74,7 +69,7 @@ function Languages() {
     );
     try {
       await axios.put(
-        `http://localhost:5270/api/languages/${languageId}`,
+        `${config.apiBaseUrl}api/languages/${languageId}`,
         {
           languageName: language.languageName,
         },
@@ -99,7 +94,7 @@ function Languages() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5270/api/languages",
+        `${config.apiBaseUrl}api/languages`,
         {
           languageName: newLanguage,
         },

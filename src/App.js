@@ -8,8 +8,6 @@ import {
 import { AuthContext } from "./context/AuthContext";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import AdminPage from "./components/AdminPage";
-import UserPage from "./components/UserPage";
 import Accounts from "./components/Accounts";
 import Languages from "./components/Languages";
 import Phrases from "./components/Phrases";
@@ -34,18 +32,6 @@ const MainContent = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route
-          path="/admin"
-          element={
-            auth && role === "Admin" ? <AdminPage /> : <Navigate to="/login" />
-          }
-        />
-        <Route
-          path="/user"
-          element={
-            auth && role === "User" ? <UserPage /> : <Navigate to="/login" />
-          }
-        />
         <Route
           path="/accounts"
           element={

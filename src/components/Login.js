@@ -5,6 +5,7 @@ import DOMPurify from "dompurify";
 import { AuthContext } from "../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 import "./Login.css";
+import config from "../config";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -21,7 +22,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5270/api/account/login",
+        `${config.apiBaseUrl}api/account/login`,
         {
           UserName: sanitizedEmail,
           Password: sanitizedPassword,

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import "./Leaderboards.css";
+import config from "../config";
 
 function Leaderboards() {
   const [sessionLeaderboard, setSessionLeaderboard] = useState([]);
@@ -12,7 +13,7 @@ function Leaderboards() {
     const fetchLeaderboards = async () => {
       try {
         const sessionResponse = await axios.get(
-          "http://localhost:5270/api/score/leaderboard",
+          `${config.apiBaseUrl}api/score/leaderboard`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -22,7 +23,7 @@ function Leaderboards() {
         setSessionLeaderboard(sessionResponse.data.entries);
 
         const totalResponse = await axios.get(
-          "http://localhost:5270/api/score/totalpoints/leaderboard",
+          `${config.apiBaseUrl}api/score/totalpoints/leaderboard`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

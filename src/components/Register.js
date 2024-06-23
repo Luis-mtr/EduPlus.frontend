@@ -3,6 +3,7 @@ import axios from "axios";
 import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
+import config from "../config";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ function Register() {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get("http://localhost:5270/api/languages");
+        const response = await axios.get(`${config.apiBaseUrl}api/languages`);
         setLanguages(response.data);
         if (response.data.length > 0) {
           setSelectedLanguageId(response.data[0].languageId); // Set the default selected language
@@ -39,7 +40,7 @@ function Register() {
     const sanitizedPassword = DOMPurify.sanitize(password);
 
     try {
-      await axios.post("http://localhost:5270/api/account/register", {
+      await axios.post(`${config.apiBaseUrl}api/account/register`, {
         Email: sanitizedEmail,
         Password: sanitizedPassword,
         Username: sanitizedUsername,

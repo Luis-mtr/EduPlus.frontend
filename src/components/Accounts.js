@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Accounts.css";
 import NavBar from "./NavBar";
+import config from "../config";
 
 function Accounts() {
   const [users, setUsers] = useState([]);
@@ -14,7 +15,7 @@ function Accounts() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5270/api/account", {
+        const response = await axios.get(`${config.apiBaseUrl}api/account`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -28,14 +29,11 @@ function Accounts() {
 
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5270/api/languages",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`${config.apiBaseUrl}api/languages`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setLanguages(response.data);
       } catch (error) {
         console.error("Error fetching languages:", error);
@@ -63,14 +61,11 @@ function Accounts() {
   const handleDelete = async (userId) => {
     if (window.confirm(`Are you sure you want to delete this user?`)) {
       try {
-        await axios.delete(
-          `http://localhost:5270/api/account/delete/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        await axios.delete(`${config.apiBaseUrl}api/account/delete/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setUsers(users.filter((user) => user.id !== userId));
       } catch (error) {
         console.error("Error deleting user:", error);
@@ -91,7 +86,7 @@ function Accounts() {
     const user = users.find((user) => user.id === userId);
     try {
       await axios.put(
-        `http://localhost:5270/api/account/update/${userId}`,
+        `${config.apiBaseUrl}api/account/update/${userId}`,
         {
           Username: user.userName,
           Email: user.email,

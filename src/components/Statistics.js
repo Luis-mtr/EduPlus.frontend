@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import "./Statistics.css";
+import config from "../config";
 
 function Statistics() {
   const { auth } = useContext(AuthContext);
@@ -13,14 +14,11 @@ function Statistics() {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5270/api/languages",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`${config.apiBaseUrl}api/languages`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setLanguages(response.data);
       } catch (error) {
         console.error("Error fetching languages:", error);
@@ -36,7 +34,7 @@ function Statistics() {
         const stats = await Promise.all(
           languages.map(async (language) => {
             const response = await axios.get(
-              `http://localhost:5270/api/score/statistics/${language.languageId}`,
+              `${config.apiBaseUrl}api/score/statistics/${language.languageId}`,
               {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -80,7 +78,7 @@ function Statistics() {
 
     const fetchOverallStats = async () => {
       try {
-        const response = await axios.get("http://localhost:5270/api/score", {
+        const response = await axios.get(`${config.apiBaseUrl}api/score`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -116,7 +114,9 @@ function Statistics() {
               <li>
                 Total Correct Answers: {allLanguagesStats.totalCountRight}
               </li>
-              <li>Average Score: {allLanguagesStats.averageScore}%</li>
+              <li>
+                Average Score: {Math.round(allLanguagesStats.averageScore)}%
+              </li>
             </ul>
           </div>
         )}
@@ -128,7 +128,7 @@ function Statistics() {
                 <ul>
                   <li>Total Answers Given: {stat.totalCountAsked}</li>
                   <li>Total Correct Answers: {stat.totalCountRight}</li>
-                  <li>Average Score: {stat.averageScore}%</li>
+                  <li>Average Score: {Math.round(stat.averageScore)}%</li>
                 </ul>
               </li>
             ))}

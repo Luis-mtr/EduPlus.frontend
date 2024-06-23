@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Sidebar.css";
 import { AuthContext } from "../context/AuthContext";
+import config from "../config";
 
 function Sidebar() {
   const [languages, setLanguages] = useState([]);
@@ -19,7 +20,7 @@ function Sidebar() {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get("http://localhost:5270/api/languages");
+        const response = await axios.get(`${config.apiBaseUrl}api/languages`);
         const allLanguages = response.data;
         if (nativeLanguageId !== null) {
           const filteredLanguages = allLanguages.filter(

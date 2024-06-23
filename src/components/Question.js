@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./Question.css";
 import { AuthContext } from "../context/AuthContext";
+import config from "../config";
 
 function Question() {
   const { selectedLanguageId } = useParams();
@@ -23,7 +24,7 @@ function Question() {
   const fetchQuestion = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5270/api/questionphrase/${selectedLanguageId}`,
+        `${config.apiBaseUrl}api/questionphrase/${selectedLanguageId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -59,7 +60,7 @@ function Question() {
   const updateScore = async (sessionPoints, addPoints) => {
     try {
       await axios.post(
-        "http://localhost:5270/api/score/Update",
+        `${config.apiBaseUrl}api/score/Update`,
         {
           sessionPoints: sessionPoints,
           addPoints: addPoints,
@@ -80,8 +81,8 @@ function Question() {
 
     const isAnswerCorrect = selectedAnswer === question.selectedLanguageText;
     const endpoint = question.isPhrase
-      ? `http://localhost:5270/api/phraseLanguageUser/update`
-      : `http://localhost:5270/api/wordLanguageUser/update`;
+      ? `${config.apiBaseUrl}api/phraseLanguageUser/update`
+      : `${config.apiBaseUrl}api/wordLanguageUser/update`;
 
     const idParam = question.isPhrase ? "phraseId" : "wordId";
     const params = new URLSearchParams({
