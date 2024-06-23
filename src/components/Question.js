@@ -5,6 +5,27 @@ import "./Question.css";
 import { AuthContext } from "../context/AuthContext";
 import config from "../config";
 
+// Helper function to shuffle an array
+const shuffle = (array) => {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex !== 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+};
+
 function Question() {
   const { selectedLanguageId } = useParams();
   const { auth, setTotalPoints } = useContext(AuthContext); // Use setTotalPoints from context
@@ -14,6 +35,7 @@ function Question() {
   const [combo, setCombo] = useState(1);
   const [score, setScore] = useState(0);
   const [lastTwoQuestions, setLastTwoQuestions] = useState([]);
+  const [choices, setChoices] = useState([]);
 
   useEffect(() => {
     if (auth) {
@@ -45,6 +67,12 @@ function Question() {
             ? updatedQuestions.slice(1)
             : updatedQuestions;
         });
+        setChoices(
+          shuffle([
+            newQuestion.selectedLanguageText,
+            ...newQuestion.otherPhrases,
+          ])
+        );
         setSelectedAnswer("");
         setIsCorrect(null);
       }
@@ -143,8 +171,6 @@ function Question() {
       </div>
     );
   }
-
-  const choices = [question.selectedLanguageText, ...question.otherPhrases];
 
   return (
     <div className="question-container">
