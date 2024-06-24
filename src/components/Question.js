@@ -181,7 +181,7 @@ function Question() {
     <div
       className={`flex flex-col items-center text-center p-5 ${
         isSidebarOpen ? "ml-56" : "mx-auto"
-      } max-w-3xl`}
+      }`}
     >
       <h2 className="text-3xl mb-5">{question.nativeLanguageText}</h2>
       <div className="flex justify-around w-full max-w-xs mb-5 text-lg">
