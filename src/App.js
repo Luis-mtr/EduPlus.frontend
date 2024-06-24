@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
+import { SidebarProvider } from "./context/SidebarContext";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Accounts from "./components/Accounts";
@@ -18,6 +19,7 @@ import Question from "./components/Question";
 import Sidebar from "./components/Sidebar";
 import Leaderboards from "./components/Leaderboards"; // Import Leaderboards component
 import "./App.css";
+import "./tailwind.css";
 
 const MainContent = () => {
   const { auth, role } = useContext(AuthContext);
@@ -92,9 +94,11 @@ const MainContent = () => {
 
 function App() {
   return (
-    <Router>
-      <MainContent />
-    </Router>
+    <SidebarProvider>
+      <Router>
+        <MainContent />
+      </Router>
+    </SidebarProvider>
   );
 }
 

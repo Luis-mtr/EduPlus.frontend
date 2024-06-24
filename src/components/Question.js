@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import "./Question.css";
 import { AuthContext } from "../context/AuthContext";
 import config from "../config";
+import { useSidebar } from "../context/SidebarContext";
 
 // Helper function to shuffle an array
 const shuffle = (array) => {
@@ -36,6 +36,7 @@ function Question() {
   const [score, setScore] = useState(0);
   const [lastTwoQuestions, setLastTwoQuestions] = useState([]);
   const [choices, setChoices] = useState([]);
+  const { isSidebarOpen } = useSidebar(); // Use sidebar context
 
   useEffect(() => {
     if (auth) {
@@ -159,12 +160,16 @@ function Question() {
 
   if (isCorrect !== null) {
     return (
-      <div className="result-container">
-        <div className={`result ${isCorrect ? "correct" : "incorrect"}`}>
+      <div className="flex flex-col items-center text-center p-5">
+        <div
+          className={`text-4xl font-bold ${
+            isCorrect ? "text-green-500" : "text-red-500"
+          }`}
+        >
           {isCorrect ? "Correct!" : "Wrong!"}
         </div>
         {!isCorrect && (
-          <div className="correct-answer">
+          <div className="mt-2 text-2xl text-black">
             {question.nativeLanguageText} = {question.selectedLanguageText}
           </div>
         )}
@@ -173,18 +178,28 @@ function Question() {
   }
 
   return (
-    <div className="question-container">
-      <h2>{question.nativeLanguageText}</h2>
-      <div className="game-stats">
-        <div className="stat-item combo">Combo: x{combo}</div>
-        <div className="stat-item score">Score: {score}</div>
+    <div
+      className={`flex flex-col items-center text-center p-5 ${
+        isSidebarOpen ? "ml-56" : "mx-auto"
+      } max-w-3xl`}
+    >
+      <h2 className="text-3xl mb-5">{question.nativeLanguageText}</h2>
+      <div className="flex justify-around w-full max-w-xs mb-5 text-lg">
+        <div className="text-blue-500 font-bold text-xl p-3 rounded bg-gray-200">
+          Combo: x{combo}
+        </div>
+        <div className="text-green-500 font-bold text-xl p-3 rounded bg-gray-200">
+          Score: {score}
+        </div>
       </div>
-      <div className="answers">
+      <div className="flex flex-col mt-5 w-full max-w-sm">
         {choices.map((choice, index) => (
           <button
             key={index}
-            className={`answer-button ${
-              selectedAnswer === choice ? "selected" : ""
+            className={`my-2 py-2 px-4 text-lg border-2 rounded transition-colors w-full ${
+              selectedAnswer === choice
+                ? "bg-blue-500 text-white border-blue-500"
+                : "bg-gray-100 border-gray-300 hover:bg-gray-200"
             }`}
             onClick={() => handleAnswerSelect(choice)}
           >
@@ -192,11 +207,17 @@ function Question() {
           </button>
         ))}
       </div>
-      <div className="actions">
-        <button onClick={handleSubmit} className="submit-button">
+      <div className="flex justify-between w-full max-w-xs mt-5">
+        <button
+          onClick={handleSubmit}
+          className="flex-1 py-2 px-4 text-lg text-white bg-green-500 rounded hover:bg-green-600 mx-1"
+        >
           Submit
         </button>
-        <button onClick={handleSkip} className="skip-button">
+        <button
+          onClick={handleSkip}
+          className="flex-1 py-2 px-4 text-lg text-white bg-yellow-500 rounded hover:bg-yellow-600 mx-1"
+        >
           Skip
         </button>
       </div>

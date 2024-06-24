@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
-import "./Statistics.css";
+import { useSidebar } from "../context/SidebarContext";
 import config from "../config";
 
 function Statistics() {
   const { auth } = useContext(AuthContext);
+  const { isSidebarOpen } = useSidebar(); // Use sidebar context
   const [statistics, setStatistics] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [allLanguagesStats, setAllLanguagesStats] = useState(null);
@@ -96,20 +97,24 @@ function Statistics() {
   }, [languages]);
 
   return (
-    <div className="page-content">
-      <div className="statistics-container">
-        <h2>Statistics</h2>
+    <div
+      className={`mt-20 p-5 flex flex-col items-center ${
+        isSidebarOpen ? "ml-56" : "mx-auto"
+      } transition-all duration-300`}
+    >
+      <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-5">Statistics</h2>
         {overallStats && (
-          <div className="overall-stats">
+          <div className="mb-5 text-lg">
             <strong>Highest Session Score:</strong> {overallStats.sessionPoints}
             <br />
             <strong>Total Points:</strong> {overallStats.addPoints}
           </div>
         )}
         {allLanguagesStats && (
-          <div className="all-languages-stats">
+          <div className="mb-5 text-lg">
             <strong>All Languages</strong>
-            <ul>
+            <ul className="list-none p-0">
               <li>Total Answers Given: {allLanguagesStats.totalCountAsked}</li>
               <li>
                 Total Correct Answers: {allLanguagesStats.totalCountRight}
@@ -121,11 +126,11 @@ function Statistics() {
           </div>
         )}
         {statistics.length > 0 ? (
-          <ul>
+          <ul className="list-none p-0">
             {statistics.map((stat, index) => (
-              <li key={index}>
-                <strong>{stat.languageName}</strong>
-                <ul>
+              <li key={index} className="mb-4">
+                <strong className="text-xl">{stat.languageName}</strong>
+                <ul className="list-none mt-2">
                   <li>Total Answers Given: {stat.totalCountAsked}</li>
                   <li>Total Correct Answers: {stat.totalCountRight}</li>
                   <li>Average Score: {Math.round(stat.averageScore)}%</li>

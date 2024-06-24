@@ -1,53 +1,110 @@
+/* Sidebar.css */
+
 .sidebar {
-  width: 125px; /* Reduce width to half */
+  width: 250px;
   height: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #333;
-  padding: 10px; /* Adjust padding to maintain proportions */
+  background-color: #282c34;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   z-index: 1000;
-  overflow-y: auto; /* Add this to make the sidebar scrollable */
+  overflow-y: auto;
+  transition: width 0.3s ease;
 }
 
 .sidebar-button {
   display: block;
-  color: #f2f2f2;
-  padding: 5px 8px; /* Adjust padding to maintain proportions */
+  color: #fff;
+  padding: 12px 20px;
   text-decoration: none;
-  font-size: 14px; /* Adjust font size to maintain proportions */
-  width: 100%;
-  text-align: left;
+  font-size: 16px;
+  text-align: center;
   border: none;
   background: none;
   cursor: pointer;
+  font-family: Arial, sans-serif;
+  border-radius: 5px;
+  width: 100%;
+  margin: 8px 0;
+  transition: background-color 0.3s ease;
 }
 
 .sidebar-button:hover {
-  background-color: #ddd;
-  color: black;
+  background-color: #444;
 }
 
 .sidebar-button.active {
-  background-color: #ddd;
-  color: black;
+  background-color: #61dafb;
+  color: #282c34;
 }
 
 .submenu {
-  margin-top: 10px; /* Adjust margin to maintain proportions */
+  margin-top: 20px;
 }
 
 .submenu p {
-  color: #f2f2f2;
-  margin: 5px 0; /* Adjust margin to maintain proportions */
-  font-size: 14px; /* Adjust font size to maintain proportions */
+  color: #61dafb;
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
 }
 
 .total-points {
-  margin-top: 10px; /* Adjust margin to maintain proportions */
-  color: #f2f2f2;
-  font-size: 14px; /* Adjust font size to maintain proportions */
+  margin-top: 20px;
+  color: #61dafb;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 0;
+}
+
+.languages-container {
+  background-color: #333;
+  border: 1px solid #444;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+}
+
+.languages-container .sidebar-button {
+  margin: 5px 0;
+  padding: 8px 10px;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+    padding: 15px;
+  }
+
+  .sidebar-button {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+
+  .total-points, .submenu p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 150px;
+    padding: 10px;
+  }
+
+  .sidebar-button {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .total-points, .submenu p {
+    font-size: 12px;
+  }
 }

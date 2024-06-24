@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
-import "./Register.css";
 import config from "../config";
 
 function Register() {
@@ -11,7 +10,7 @@ function Register() {
   const [username, setUsername] = useState("");
   const [languages, setLanguages] = useState([]);
   const [selectedLanguageId, setSelectedLanguageId] = useState("");
-  const [registrationSuccess, setRegistrationSuccess] = useState(false); // New state for registration success
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -64,51 +63,72 @@ function Register() {
   };
 
   return (
-    <div className="page-content">
-      <div className="register-container">
-        <h2>Register</h2>
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          id="username"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <label htmlFor="language">Native Language</label>
-        <select
-          id="language"
-          value={selectedLanguageId}
-          onChange={(e) => setSelectedLanguageId(e.target.value)}
-        >
-          {languages.map((language) => (
-            <option key={language.languageId} value={language.languageId}>
-              {language.languageName}
-            </option>
-          ))}
-        </select>
-        <button type="submit" onClick={handleRegister}>
-          Register
-        </button>
-        <button type="button" onClick={handleBack}>
-          Back
-        </button>
+    <div className="flex flex-col items-center mt-20 p-5">
+      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
+        <form onSubmit={handleRegister} className="flex flex-col space-y-4">
+          <label htmlFor="username" className="self-start text-lg font-medium">
+            Username
+          </label>
+          <input
+            type="text"
+            id="username"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <label htmlFor="email" className="self-start text-lg font-medium">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <label htmlFor="password" className="self-start text-lg font-medium">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <label htmlFor="language" className="self-start text-lg font-medium">
+            Native Language
+          </label>
+          <select
+            id="language"
+            value={selectedLanguageId}
+            onChange={(e) => setSelectedLanguageId(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {languages.map((language) => (
+              <option key={language.languageId} value={language.languageId}>
+                {language.languageName}
+              </option>
+            ))}
+          </select>
+          <button
+            type="submit"
+            className="w-full py-2 text-white bg-green-500 rounded-md hover:bg-green-600"
+          >
+            Register
+          </button>
+          <button
+            type="button"
+            onClick={handleBack}
+            className="w-full py-2 mt-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+          >
+            Back
+          </button>
+        </form>
       </div>
     </div>
   );
