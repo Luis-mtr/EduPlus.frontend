@@ -56,15 +56,20 @@ function Sidebar() {
   return (
     <>
       <button
-        className="fixed top-4 left-4 bg-blue-500 text-white py-2 px-4 rounded z-50"
+        className="fixed top-4 left-4 bg-blue-500 text-white py-2 px-4 rounded z-50 flex items-center justify-center"
         onClick={toggleSidebar}
+        style={{ minWidth: 120 }}
       >
-        {isSidebarOpen ? "Close" : "Open"} Sidebar
+        {isSidebarOpen ? (
+          <span>Close</span>
+        ) : (
+          <span>Menu - {totalPoints} Pts.</span>
+        )}
       </button>
       <div
         className={`fixed top-0 left-0 h-full bg-gray-800 p-5 flex flex-col items-start transition-transform transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } w-48 z-40 pt-16`} // Changed to w-48 for a narrower sidebar
+        } w-48 z-40 pt-16`}
       >
         <div className="mb-4 text-blue-400">
           <p className="font-bold">Total Points</p>

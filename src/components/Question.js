@@ -160,7 +160,7 @@ function Question() {
 
   if (isCorrect !== null) {
     return (
-      <div className="flex flex-col items-center text-center p-5">
+      <div className="flex flex-col items-center text-center p-5 mt-20">
         <div
           className={`text-4xl font-bold ${
             isCorrect ? "text-green-500" : "text-red-500"
@@ -179,7 +179,7 @@ function Question() {
 
   return (
     <div
-      className={`flex flex-col items-center text-center p-5 ${
+      className={`flex flex-col items-center text-center p-5 mt-20 ${
         isSidebarOpen ? "ml-56" : "mx-auto"
       }`}
     >
