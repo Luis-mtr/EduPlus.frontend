@@ -5,14 +5,39 @@ import { useSidebar } from "../context/SidebarContext";
 import config from "../config";
 
 function Statistics() {
-  const { auth } = useContext(AuthContext);
+  const { auth, nativeLanguageId } = useContext(AuthContext);
   const { isSidebarOpen } = useSidebar(); // Use sidebar context
   const [statistics, setStatistics] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [allLanguagesStats, setAllLanguagesStats] = useState(null);
   const [overallStats, setOverallStats] = useState(null);
+  const [labels, setLabels] = useState({});
 
   useEffect(() => {
+    const fetchLabels = async () => {
+      try {
+        const labelIds = [24, 27, 22, 28, 29, 30, 31];
+        const labelPromises = labelIds.map((id) =>
+          axios.get(
+            `${config.apiBaseUrl}api/wordlanguage/${id}/${nativeLanguageId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          )
+        );
+        const labelResponses = await Promise.all(labelPromises);
+        const newLabels = {};
+        labelResponses.forEach((response, index) => {
+          newLabels[labelIds[index]] = response.data; // Assuming response.data is the string
+        });
+        setLabels(newLabels);
+      } catch (error) {
+        console.error("Error fetching labels:", error);
+      }
+    };
+
     const fetchLanguages = async () => {
       try {
         const response = await axios.get(`${config.apiBaseUrl}api/languages`, {
@@ -26,8 +51,11 @@ function Statistics() {
       }
     };
 
-    fetchLanguages();
-  }, []);
+    if (auth && nativeLanguageId) {
+      fetchLabels();
+      fetchLanguages();
+    }
+  }, [auth, nativeLanguageId]);
 
   useEffect(() => {
     const fetchStatistics = async () => {
@@ -103,24 +131,33 @@ function Statistics() {
       } transition-all duration-300`}
     >
       <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-5">Statistics</h2>
+        <h2 className="text-2xl font-bold mb-5">
+          {labels[24] || "Statistics"}
+        </h2>
         {overallStats && (
           <div className="mb-5 text-lg">
-            <strong>Highest Session Score:</strong> {overallStats.sessionPoints}
+            <strong>{labels[27] || "Highest Session Score"}:</strong>{" "}
+            {overallStats.sessionPoints}
             <br />
-            <strong>Total Points:</strong> {overallStats.addPoints}
+            <strong>{labels[22] || "Total Points"}:</strong>{" "}
+            {overallStats.addPoints}
           </div>
         )}
         {allLanguagesStats && (
           <div className="mb-5 text-lg">
-            <strong>All Languages</strong>
+            <strong>{labels[28] || "All Languages"}</strong>
             <ul className="list-none p-0">
-              <li>Total Answers Given: {allLanguagesStats.totalCountAsked}</li>
               <li>
-                Total Correct Answers: {allLanguagesStats.totalCountRight}
+                {labels[29] || "Total Answers Given"}:{" "}
+                {allLanguagesStats.totalCountAsked}
               </li>
               <li>
-                Average Score: {Math.round(allLanguagesStats.averageScore)}%
+                {labels[30] || "Total Correct Answers"}:{" "}
+                {allLanguagesStats.totalCountRight}
+              </li>
+              <li>
+                {labels[31] || "Average Score"}:{" "}
+                {Math.round(allLanguagesStats.averageScore)}%
               </li>
             </ul>
           </div>
@@ -131,9 +168,18 @@ function Statistics() {
               <li key={index} className="mb-4">
                 <strong className="text-xl">{stat.languageName}</strong>
                 <ul className="list-none mt-2">
-                  <li>Total Answers Given: {stat.totalCountAsked}</li>
-                  <li>Total Correct Answers: {stat.totalCountRight}</li>
-                  <li>Average Score: {Math.round(stat.averageScore)}%</li>
+                  <li>
+                    {labels[29] || "Total Answers Given"}:{" "}
+                    {stat.totalCountAsked}
+                  </li>
+                  <li>
+                    {labels[30] || "Total Correct Answers"}:{" "}
+                    {stat.totalCountRight}
+                  </li>
+                  <li>
+                    {labels[31] || "Average Score"}:{" "}
+                    {Math.round(stat.averageScore)}%
+                  </li>
                 </ul>
               </li>
             ))}

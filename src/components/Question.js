@@ -28,7 +28,7 @@ const shuffle = (array) => {
 
 function Question() {
   const { selectedLanguageId } = useParams();
-  const { auth, setTotalPoints } = useContext(AuthContext); // Use setTotalPoints from context
+  const { auth, setTotalPoints, nativeLanguageId } = useContext(AuthContext); // Use setTotalPoints from context
   const [question, setQuestion] = useState(null);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [isCorrect, setIsCorrect] = useState(null);
@@ -37,6 +37,37 @@ function Question() {
   const [lastTwoQuestions, setLastTwoQuestions] = useState([]);
   const [choices, setChoices] = useState([]);
   const { isSidebarOpen } = useSidebar(); // Use sidebar context
+  const [labels, setLabels] = useState({});
+
+  useEffect(() => {
+    const fetchLabels = async () => {
+      try {
+        const labelIds = [32, 33, 34, 41, 42];
+        const labelPromises = labelIds.map((id) =>
+          axios.get(
+            `${config.apiBaseUrl}api/wordlanguage/${id}/${nativeLanguageId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          )
+        );
+        const labelResponses = await Promise.all(labelPromises);
+        const newLabels = {};
+        labelResponses.forEach((response, index) => {
+          newLabels[labelIds[index]] = response.data; // Assuming response.data is the string
+        });
+        setLabels(newLabels);
+      } catch (error) {
+        console.error("Error fetching labels:", error);
+      }
+    };
+
+    if (nativeLanguageId) {
+      fetchLabels();
+    }
+  }, [nativeLanguageId]);
 
   useEffect(() => {
     if (auth) {
@@ -166,7 +197,9 @@ function Question() {
             isCorrect ? "text-green-500" : "text-red-500"
           }`}
         >
-          {isCorrect ? "Correct!" : "Wrong!"}
+          {isCorrect
+            ? (labels[41] || "Correct") + "!"
+            : (labels[42] || "Wrong") + "!"}
         </div>
         {!isCorrect && (
           <div className="mt-2 text-2xl text-black">
@@ -189,7 +222,7 @@ function Question() {
           Combo: x{combo}
         </div>
         <div className="text-green-500 font-bold text-xl p-3 rounded bg-gray-200">
-          Score: {score}
+          {labels[32] || "Score"}: {score}
         </div>
       </div>
       <div className="flex flex-col mt-5 w-full max-w-sm">
@@ -212,13 +245,13 @@ function Question() {
           onClick={handleSubmit}
           className="flex-1 py-2 px-4 text-lg text-white bg-green-500 rounded hover:bg-green-600 mx-1"
         >
-          Submit
+          {labels[33] || "Submit"}
         </button>
         <button
           onClick={handleSkip}
           className="flex-1 py-2 px-4 text-lg text-white bg-yellow-500 rounded hover:bg-yellow-600 mx-1"
         >
-          Skip
+          {labels[34] || "Skip"}
         </button>
       </div>
     </div>

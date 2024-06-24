@@ -7,10 +7,35 @@ import config from "../config";
 function Leaderboards() {
   const [sessionLeaderboard, setSessionLeaderboard] = useState([]);
   const [totalLeaderboard, setTotalLeaderboard] = useState([]);
-  const { auth } = useContext(AuthContext);
+  const [labels, setLabels] = useState({});
+  const { auth, nativeLanguageId } = useContext(AuthContext); // Use nativeLanguageId from context
   const { isSidebarOpen } = useSidebar(); // Use sidebar context
 
   useEffect(() => {
+    const fetchLabels = async () => {
+      try {
+        const labelIds = [35, 36, 37, 38, 22];
+        const labelPromises = labelIds.map((id) =>
+          axios.get(
+            `${config.apiBaseUrl}api/wordlanguage/${id}/${nativeLanguageId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          )
+        );
+        const labelResponses = await Promise.all(labelPromises);
+        const newLabels = {};
+        labelResponses.forEach((response, index) => {
+          newLabels[labelIds[index]] = response.data; // Assuming response.data is the string
+        });
+        setLabels(newLabels);
+      } catch (error) {
+        console.error("Error fetching labels:", error);
+      }
+    };
+
     const fetchLeaderboards = async () => {
       try {
         const sessionResponse = await axios.get(
@@ -37,10 +62,11 @@ function Leaderboards() {
       }
     };
 
-    if (auth) {
+    if (auth && nativeLanguageId) {
+      fetchLabels();
       fetchLeaderboards();
     }
-  }, [auth]);
+  }, [auth, nativeLanguageId]);
 
   return (
     <div
@@ -51,14 +77,20 @@ function Leaderboards() {
       <div className="flex flex-col lg:flex-row justify-around w-full max-w-6xl space-y-6 lg:space-y-0 lg:space-x-6">
         <div className="w-full lg:w-1/2 bg-white p-8 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold mb-5 text-center">
-            Best Learning Sessions
+            {labels[35] || "Best Learning Sessions"}
           </h2>
           <table className="w-full border-collapse">
             <thead>
               <tr>
-                <th className="border-b-2 p-3 text-left">Rank</th>
-                <th className="border-b-2 p-3 text-left">Username</th>
-                <th className="border-b-2 p-3 text-left">Session Points</th>
+                <th className="border-b-2 p-3 text-left">
+                  {labels[36] || "Rank"}
+                </th>
+                <th className="border-b-2 p-3 text-left">
+                  {labels[37] || "Username"}
+                </th>
+                <th className="border-b-2 p-3 text-left">
+                  {labels[38] || "Session Points"}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -76,13 +108,21 @@ function Leaderboards() {
           </table>
         </div>
         <div className="w-full lg:w-1/2 bg-white p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold mb-5 text-center">Total Score</h2>
+          <h2 className="text-2xl font-bold mb-5 text-center">
+            {labels[22] || "Total Score"}
+          </h2>
           <table className="w-full border-collapse">
             <thead>
               <tr>
-                <th className="border-b-2 p-3 text-left">Rank</th>
-                <th className="border-b-2 p-3 text-left">Username</th>
-                <th className="border-b-2 p-3 text-left">Total Points</th>
+                <th className="border-b-2 p-3 text-left">
+                  {labels[36] || "Rank"}
+                </th>
+                <th className="border-b-2 p-3 text-left">
+                  {labels[37] || "Username"}
+                </th>
+                <th className="border-b-2 p-3 text-left">
+                  {labels[22] || "Total Points"}
+                </th>
               </tr>
             </thead>
             <tbody>
