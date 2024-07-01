@@ -8,8 +8,8 @@ function Leaderboards() {
   const [sessionLeaderboard, setSessionLeaderboard] = useState([]);
   const [totalLeaderboard, setTotalLeaderboard] = useState([]);
   const [labels, setLabels] = useState({});
-  const { auth, nativeLanguageId } = useContext(AuthContext); // Use nativeLanguageId from context
-  const { isSidebarOpen } = useSidebar(); // Use sidebar context
+  const { auth, nativeLanguageId } = useContext(AuthContext); 
+  const { isSidebarOpen } = useSidebar(); 
 
   useEffect(() => {
     const fetchLabels = async () => {
@@ -28,7 +28,7 @@ function Leaderboards() {
         const labelResponses = await Promise.all(labelPromises);
         const newLabels = {};
         labelResponses.forEach((response, index) => {
-          newLabels[labelIds[index]] = response.data; // Assuming response.data is the string
+          newLabels[labelIds[index]] = response.data; 
         });
         setLabels(newLabels);
       } catch (error) {
